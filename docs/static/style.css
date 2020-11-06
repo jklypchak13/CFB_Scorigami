@@ -1,0 +1,21 @@
+.Impossible {
+	height: 20px;
+
+	background-color: black;
+}
+
+.Filled {
+	height: 20px;
+
+	background-color: green;
+}
+
+.Empty {
+	height: 20px;
+
+	background-color: white;
+}
+
+body {
+	font-size: 20px;
+}
