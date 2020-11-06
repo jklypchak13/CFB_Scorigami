@@ -7,26 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>CFB Scorigami</title>
     <link rel="stylesheet" type="text/css" href="static/style.css">
+
 </head>
 
 <body>
-    <table>
-        <tr>
-            {%for i in range(-1,max_score + 1)%}
-            <th>{{i}}</th>
-            {%endfor%}
-        </tr>
-        {% for i in range(max_score+1) %}
-        <tr>
-            <th>
-                {{i}}
-            </th>
-            {% for j in range(max_score+1) %}
-            <td class="{{table.get_value(j,i)}}"></td>
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                {%for i in range(max_score + 1)%}
+                <th>{{i}}</th>
+                {%endfor%}
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in range(max_score+1) %}
+            <tr>
+                <td class="headcol">
+                    {{i}}
+                </td>
+                {% for j in range(max_score+1) %}
+                <td class="{{table.get_value(j,i)}}"></td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
+            </tbody>
+        </table>
+    </div>
 </body>
 <script src="static/main.js"></script>
 </html>

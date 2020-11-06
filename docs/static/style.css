@@ -1,21 +1,60 @@
 .Impossible {
-	height: 20px;
-
 	background-color: black;
 }
 
 .Filled {
-	height: 20px;
-
 	background-color: green;
 }
 
 .Empty {
-	height: 20px;
-
 	background-color: white;
 }
 
 body {
-	font-size: 20px;
+	display: flex;
+	color: #333;
+	justify-content: center;
+}
+
+.table-wrapper {
+	width: 80%;
+	height: 500px;
+	overflow: scroll;
+}
+
+table {
+	font-size: 10pt;
+	border: 1px solid black;
+	border-collapse: collapse;
+	height: 100%;
+}
+
+td,
+th {
+	min-height: 100%;
+	width: 30px;
+	white-space: nowrap;
+	border: 1px solid black;
+	padding: 1px;
+}
+
+th {
+	border: 1px solid black;
+	background-color: #eee;
+	position: sticky;
+	top: -1px;
+	z-index: 2;
+}
+
+th:first-of-type {
+	left: 0;
+	z-index: 3;
+}
+
+tbody tr td:first-of-type {
+	text-align: center;
+	background-color: #eee;
+	position: sticky;
+	left: -1px;
+	z-index: 1;
 }
