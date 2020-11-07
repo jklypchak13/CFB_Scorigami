@@ -43,26 +43,6 @@ def write_cache(game_dict):
 
 
 def read_cache():
-    years = []
-    for root, dirs, files in os.walk('data'):
-        for file in files:
-            if 'cache' in file:
-                # extract year
-                year = file[6:-5]
-                years.append(int(year))
-    return years
-
-
-def write_cache(game_dict):
-
-    for year, games in game_dict.items():
-        output_file = f'data/cache_{year}.json'
-        updated_games = [game.to_json() for game in games]
-        with open(output_file, 'w') as fp:
-            json.dump(updated_games, fp)
-
-
-def read_cache():
     all_games = {}
     for root, dirs, files in os.walk('data'):
         for file in files:

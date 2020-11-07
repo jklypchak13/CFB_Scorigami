@@ -27,11 +27,13 @@ def get_games(all_games: Dict[int, List[Game]]) -> Dict[int, List[Game]]:
             print(f'Data for {current_year} found in cache')
             continue
         print(f'Currently Scraping Year {current_year}')
-        all_games[current_year] = get_year_data(current_year)
+        table_rows = _get_year_data(current_year)
+        all_games[current_year] = _process_year_data(table_rows)
+
     return all_games
 
 
-def get_year_data(year: int) -> List[Game]:
+def _get_year_data(year: int) -> List[BeautifulSoup]:
     """scrape the game data for the given year
 
     Args:
@@ -51,8 +53,21 @@ def get_year_data(year: int) -> List[Game]:
     soup = BeautifulSoup(page, 'html.parser')
 
     table = soup.find_all('tbody')[0]
+    rows = table.find_all('tr')
+    return rows
+
+
+def _process_year_data(rows: List[BeautifulSoup]) -> List[Game]:
+    """process the rows in the site's table, converting them into game objects
+
+    Args:
+        rows (List[BeautifulSoup]): the current years data
+
+    Returns:
+        List[Game]: the current years data as Game objects
+    """
     games = []
-    for row in table.find_all('tr'):
+    for row in rows:
         winner_points = _get_element(row, 'winner_points')
         loser_points = _get_element(row, 'loser_points')
         winner = _get_element(row, 'winner_school_name')
@@ -87,6 +102,11 @@ def _get_element(row: BeautifulSoup, attr: str) -> str:
             if val.next_sibling is not None:
                 val = val.next_sibling
                 val = val.contents[0]
-        return val
+
+        try:
+            val = int(val)
+            return val
+        except ValueError:
+            return val
     else:
         return None

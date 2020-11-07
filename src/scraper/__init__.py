@@ -1,1 +1,1 @@
-from .scrap import get_games
+from .scrape import get_games
