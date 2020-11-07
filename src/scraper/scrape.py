@@ -102,6 +102,11 @@ def _get_element(row: BeautifulSoup, attr: str) -> str:
             if val.next_sibling is not None:
                 val = val.next_sibling
                 val = val.contents[0]
-        return val
+
+        try:
+            val = int(val)
+            return val
+        except ValueError:
+            return val
     else:
         return None
