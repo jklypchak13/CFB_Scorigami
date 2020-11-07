@@ -24,9 +24,6 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install pipenv
                   pipenv install
-            - name: Enter pipenv shell
-              run: |
-                  pipenv shell
             - name: Test with pytest
               run: |
-                  pytest
+                  pipenv run pytest
