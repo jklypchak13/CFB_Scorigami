@@ -1,10 +1,6 @@
-import jinja2
-from data_types import Game
 from file_manger import get_template, write_file, read_cache, write_cache, check_directories
 from scraper import get_games
 from scorigami_table import ScorigamiTable
-import json
-import os
 
 
 def generate_index(score_table):
