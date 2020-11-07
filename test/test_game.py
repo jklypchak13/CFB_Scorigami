@@ -1,6 +1,6 @@
 import pytest
-from data_types import Game
 from . import context
+from data_types import Game
 
 
 @pytest.fixture
