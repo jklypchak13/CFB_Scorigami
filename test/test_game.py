@@ -1,12 +1,20 @@
 import pytest
 from . import context
 from data_types import Game
+from data_types.game import parse_date_string
+import datetime
 
 
 @pytest.fixture
 def sample_game():
     game = Game("Ohio State", "Michigan", 100, 0, "Nov 5, 2020")
     return game
+
+
+def test_parse_date_string():
+    expected = datetime.date.fromisoformat('2020-10-31')
+    result = parse_date_string('Oct 31, 2020')
+    assert expected == result
 
 
 def test_to_json(sample_game):
@@ -44,3 +52,13 @@ def test_equal_true(sample_game):
 def test_equal_false(sample_game):
     other_game = Game("Rutgers", "Michigan", 99, 0, "Oct 30, 2020")
     assert sample_game != other_game
+
+
+def test_lt_true(sample_game):
+    other_game = Game("Rutgers", "Michigan", 99, 0, "Nov 30, 2020")
+    assert sample_game < other_game
+
+
+def test_lt_false(sample_game):
+    other_game = Game("Rutgers", "Michigan", 99, 0, "Sep 30, 2020")
+    assert not sample_game < other_game

@@ -7,11 +7,12 @@ import datetime
 from typing import Dict, List
 
 
-def get_games(all_games: Dict[int, List[Game]]) -> Dict[int, List[Game]]:
+def get_games(all_games: Dict[int, List[Game]], ignore_current=True) -> Dict[int, List[Game]]:
     """get data for all CFB games that have been played, accounting for cached games
 
     Args:
         all_games (Dict[int, List[Game]]): the cached games
+        ignore_current (bool, optional): to ignore current eyar in cache. Defaults to True.
 
     Returns:
         Dict[int, List[Game]]: all games tat have been played
@@ -23,7 +24,7 @@ def get_games(all_games: Dict[int, List[Game]]) -> Dict[int, List[Game]]:
     # Loop through all Years
     for current_year in range(starting_year, ending_year + 1):
         # Check cache, except current year. Get up to date data
-        if current_year in cached_years and current_year != ending_year:
+        if current_year in cached_years and (current_year != ending_year or not ignore_current):
             print(f'Data for {current_year} found in cache')
             continue
         print(f'Currently Scraping Year {current_year}')

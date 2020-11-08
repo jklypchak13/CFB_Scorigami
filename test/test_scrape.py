@@ -67,14 +67,21 @@ def test_process_year_data_correct_game(sample_rows):
 
 # Test Get Games
 
-def test_get_games_1869_correct():
+def test_get_games_ignore_current_year_true():
     current_year = datetime.datetime.now().year
     fake_cache = get_fake_cache()
     result = scrape.get_games(fake_cache)
     assert len(result[current_year]) > 0
 
 
-def test_get_games_ignore_current_year():
+def test_get_games_ignore_current_year_false():
+    current_year = datetime.datetime.now().year
+    fake_cache = get_fake_cache()
+    result = scrape.get_games(fake_cache, ignore_current=True)
+    assert len(result[current_year]) > 0
+
+
+def test_get_games_1869_correct():
     fake_cache = get_fake_cache()
     result = scrape.get_games(fake_cache)
 
