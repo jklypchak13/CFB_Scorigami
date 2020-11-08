@@ -1,4 +1,39 @@
 from typing import Dict
+import datetime
+
+MONTH_TABLE = {
+    'Jan': '01',
+    'Feb': '02',
+    'Mar': '03',
+    'Apr': '04',
+    'May': '05',
+    'Jun': '06',
+    'Jul': '07',
+    'Aug': '08',
+    'Sep': '09',
+    'Oct': '10',
+    'Nov': '11',
+    'Dec': '12'
+}
+
+
+def parse_date_string(date_string: str) -> datetime.date:
+    """parse the given string into a datetime object
+
+    Args:
+        date_string (str): the date in form MMM DD, YYYY
+
+    Returns:
+        datetime.date: [description]
+    """
+
+    components = date_string.replace(',', '').split(' ')
+    day = '0' + components[1] if len(components[1]) < 2 else components[1]
+    month = MONTH_TABLE[components[0]]
+    year = components[2]
+    new_str = f'{year}-{month}-{day}'
+
+    return datetime.date.fromisoformat(new_str)
 
 
 class Game:
@@ -19,6 +54,11 @@ class Game:
         type_equal = type(self) == type(other)
 
         return type_equal and self.winner_points == other.winner_points and self.loser_points == other.loser_points
+
+    def __lt__(self, other):
+        """compare by date
+        """
+        return parse_date_string(self.date) < parse_date_string(other.date)
 
     def to_json(self) -> Dict[str, any]:
         """return the json represention of this
