@@ -45,7 +45,7 @@ def test_repr(sample_game):
 
 
 def test_equal_true(sample_game):
-    other_game = Game("Penn State", "Michigan", 100, 0, "Oct 31, 2020")
+    other_game = Game("Ohio State", "Michigan", 100, 0, "Oct 31, 2020")
     assert sample_game == other_game
 
 
@@ -62,3 +62,13 @@ def test_lt_true(sample_game):
 def test_lt_false(sample_game):
     other_game = Game("Rutgers", "Michigan", 99, 0, "Sep 30, 2020")
     assert not sample_game < other_game
+
+
+def test_gt_true(sample_game):
+    other_game = Game("Rutgers", "Michigan", 99, 0, "Nov 30, 2020")
+    assert not sample_game > other_game
+
+
+def test_tt_false(sample_game):
+    other_game = Game("Rutgers", "Michigan", 99, 0, "Sep 30, 2020")
+    assert sample_game > other_game

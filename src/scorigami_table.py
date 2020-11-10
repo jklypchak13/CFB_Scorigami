@@ -9,6 +9,7 @@ class TableEntry:
 
     def __init__(self, value='Empty', game=None):
         self.first_game: Game = game
+        self.last_game: Game = game
         self.value: str = value
 
     def __repr__(self):
@@ -16,6 +17,9 @@ class TableEntry:
 
     def __lt__(self, other):
         return self.first_game.winner_points < other.first_game.winner_points
+
+    def __gt__(self, other):
+        return self.first_game.winner_points > other.first_game.winner_points
 
     def __eq__(self, other):
         return self.first_game == other.first_game and self.value == other.value
@@ -40,10 +44,13 @@ class ScorigamiTable:
             key = (game.winner_points, game.loser_points)
 
             if key in self.unique_scores.keys():
-                # This score has occurred, See which game sooner
-                previous = self.unique_scores[key]
-                if previous.first_game < game:
-                    continue
+                # This score has occurred, check for updates
+                entry = self.unique_scores[key]
+                if entry.first_game > game:
+                    entry.first_game = game
+                elif entry.last_game < game:
+                    entry.last_game = game
+                continue
 
             # Unique Score
             entry = TableEntry(value='Filled', game=game)
@@ -61,8 +68,8 @@ class ScorigamiTable:
         """
         return self.get_entry(winner_score, loser_score).value
 
-    def get_game(self, winner_score: int, loser_score: int) -> Game:
-        """get the Game of the table entry for the given scoreline
+    def get_first_game(self, winner_score: int, loser_score: int) -> Game:
+        """get the first Game of the table entry for the given scoreline
 
         Args:
             winner_score (int): the winner's score
@@ -72,6 +79,18 @@ class ScorigamiTable:
             str: the Game for the specified table entry
         """
         return self.get_entry(winner_score, loser_score).first_game
+
+    def get_recent_game(self, winner_score: int, loser_score: int) -> Game:
+        """get the Game of the table entry for the given scoreline
+
+        Args:
+            winner_score (int): the winner's score
+            loser_score (int): the loser's score
+
+        Returns:
+            str: the Game for the specified table entry
+        """
+        return self.get_entry(winner_score, loser_score).last_game
 
     def get_entry(self, winner_score: int, loser_score: int) -> TableEntry:
         """get the TableEntry for the given score line

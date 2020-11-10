@@ -72,27 +72,44 @@ def test_get_entry_filled(populated_table):
     assert result == expected
 
 
-def test_get_game_impossible(populated_table):
-    assert populated_table.get_game(0, 2) is None
+def test_get_first_game_impossible(populated_table):
+    assert populated_table.get_first_game(0, 2) is None
 
 
-def test_get_game_empty(populated_table):
-    assert populated_table.get_game(10, 0) is None
+def test_get_first_game_empty(populated_table):
+    assert populated_table.get_first_game(10, 0) is None
 
 
-def test_get_game_filled(populated_table):
-    result = populated_table.get_game(100, 0)
+def test_get_first_game_filled(populated_table):
+    result = populated_table.get_first_game(100, 0)
     expected = Game(
         'Penn State', 'Rutgers', 100, 0, 'Nov 2, 2020')
     assert result == expected
 
 
+def test_get_recent_game_impossible(populated_table):
+    assert populated_table.get_recent_game(0, 2) is None
+
+
+def test_get_recent_game_empty(populated_table):
+    assert populated_table.get_recent_game(10, 0) is None
+
+
+def test_get_recent_game_filled(populated_table):
+    newest_game = Game(
+        'Ohio State', 'Rutgers', 100, 0, 'Nov 5, 2020')
+    updated_table = populated_table
+    updated_table.add_games([newest_game])
+    result = updated_table.get_recent_game(100, 0)
+    assert result == newest_game
+
+
 def test_get_value_impossible(populated_table):
-    assert populated_table.get_game(0, 2) is None
+    assert populated_table.get_first_game(0, 2) is None
 
 
 def test_get_value_empty(populated_table):
-    assert populated_table.get_game(10, 0) is None
+    assert populated_table.get_first_game(10, 0) is None
 
 
 def test_get_value_filled(populated_table):

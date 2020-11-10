@@ -52,13 +52,19 @@ class Game:
 
     def __eq__(self, other):
         type_equal = type(self) == type(other)
-
-        return type_equal and self.winner_points == other.winner_points and self.loser_points == other.loser_points
+        teams_equal = self.winner == other.winner and self.loser == other.loser
+        scores_equal = self.winner_points == other.winner_points and self.loser_points == other.loser_points
+        return type_equal and teams_equal and scores_equal
 
     def __lt__(self, other):
         """compare by date
         """
         return parse_date_string(self.date) < parse_date_string(other.date)
+
+    def __gt__(self, other):
+        """compare by date
+        """
+        return parse_date_string(self.date) > parse_date_string(other.date)
 
     def to_json(self) -> Dict[str, any]:
         """return the json represention of this
