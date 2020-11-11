@@ -2,8 +2,10 @@ import jinja2
 import os
 import json
 from data_types import Game
+from typing import List
 OUTPUT_DIR: str = f'docs{os.sep}'
 INPUT_DIR: str = './src/templates'
+CACHE_FILE = 'data/scorgiami_cache.json'
 
 
 def get_template(file_name: str) -> jinja2.Template:
@@ -33,28 +35,29 @@ def write_file(output: str, file_name: str):
         fp.write(output)
 
 
-def write_cache(game_dict):
+def write_cache(file_name: str, games: List[Game], years: List[int]):
+    json_games = [game.to_json() for game in games]
 
-    for year, games in game_dict.items():
-        output_file = f'data/cache_{year}.json'
-        updated_games = [game.to_json() for game in games]
-        with open(output_file, 'w') as fp:
-            json.dump(updated_games, fp)
+    cache = {
+        "years": years,
+        "games": json_games
+    }
+    with open(file_name, 'w') as fp:
+        json.dump(cache, fp)
 
 
-def read_cache():
-    all_games = {}
-    for root, dirs, files in os.walk('data'):
-        for file in files:
-            if 'cache' in file:
-                # extract year
-                year = int(file[6:-5])
-                games = []
-                with open(root + os.sep + file, 'r') as fp:
-                    games = json.load(fp)
-                    games = [Game.from_json(game) for game in games]
-                all_games[year] = games
-    return all_games
+def read_cache(file_name):
+    games = []
+    years = []
+
+    cache = {}
+    if os.path.exists(file_name):
+        with open(file_name, 'r') as fp:
+            cache = json.load(fp)
+            games = [Game.from_json(game) for game in cache['games']]
+            years = cache['years']
+
+    return games, years
 
 
 def check_directories():

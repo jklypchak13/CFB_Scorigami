@@ -7,11 +7,11 @@ import datetime
 from typing import Dict, List
 
 
-def get_games(all_games: Dict[int, List[Game]], ignore_current=True) -> Dict[int, List[Game]]:
+def get_games(cached_years: List[int], ignore_current=True) -> Dict[int, List[Game]]:
     """get data for all CFB games that have been played, accounting for cached games
 
     Args:
-        all_games (Dict[int, List[Game]]): the cached games
+        cached_years (List[int]): the years to skip
         ignore_current (bool, optional): to ignore current eyar in cache. Defaults to True.
 
     Returns:
@@ -19,19 +19,25 @@ def get_games(all_games: Dict[int, List[Game]], ignore_current=True) -> Dict[int
     """
     starting_year: int = 1869  # first year of CFB
     ending_year: int = datetime.datetime.now().year  # get up to date data
-    cached_years: List[int] = all_games.keys()
 
+    all_games = {}
+
+    if ignore_current and ending_year in cached_years:
+        cached_years.remove(ending_year)
+
+    all_years = cached_years
     # Loop through all Years
     for current_year in range(starting_year, ending_year + 1):
         # Check cache, except current year. Get up to date data
-        if current_year in cached_years and (current_year != ending_year or not ignore_current):
+        if current_year in cached_years:
             print(f'Data for {current_year} found in cache')
             continue
         print(f'Currently Scraping Year {current_year}')
         table_rows = _get_year_data(current_year)
         all_games[current_year] = _process_year_data(table_rows)
+        all_years.append(current_year)
 
-    return all_games
+    return all_games, all_years
 
 
 def _get_year_data(year: int) -> List[BeautifulSoup]:
