@@ -13,7 +13,7 @@ def sample_rows():
 
 
 def get_fake_cache():
-    return {i: [] for i in range(1870, 2021)}
+    return [i for i in range(1870, 2021)]
 
 # Test Get Year Data
 
@@ -70,30 +70,42 @@ def test_process_year_data_correct_game(sample_rows):
 def test_get_games_ignore_current_year_true():
     current_year = datetime.datetime.now().year
     fake_cache = get_fake_cache()
-    result = scrape.get_games(fake_cache)
+    result, years = scrape.get_games(fake_cache)
+    current_year = datetime.datetime.now().year
+    expected_years = [i for i in range(1869, current_year + 1)]
+    assert sorted(years) == sorted(expected_years)
     assert len(result[current_year]) > 0
 
 
 def test_get_games_ignore_current_year_false():
     current_year = datetime.datetime.now().year
     fake_cache = get_fake_cache()
-    result = scrape.get_games(fake_cache, ignore_current=True)
+    result, years = scrape.get_games(fake_cache, ignore_current=True)
+    current_year = datetime.datetime.now().year
+    expected_years = [i for i in range(1869, current_year + 1)]
+    assert sorted(years) == sorted(expected_years)
     assert len(result[current_year]) > 0
 
 
 def test_get_games_1869_correct():
     fake_cache = get_fake_cache()
-    result = scrape.get_games(fake_cache)
+    result, years = scrape.get_games(fake_cache)
 
     expected = [
         Game("Rutgers", "Princeton", 6, 4, "Nov 6, 1869"),
         Game("Princeton", "Rutgers", 8, 0, "Nov 13, 1869")
     ]
+    current_year = datetime.datetime.now().year
+    expected_years = [i for i in range(1869, current_year + 1)]
+    assert sorted(years) == sorted(expected_years)
     assert result[1869] == expected
 
 
 def test_get_games_skip_cache():
-    fake_cache = get_fake_cache()
-    result = scrape.get_games(fake_cache)
 
-    assert result[1870] == []
+    fake_cache = get_fake_cache()
+    result, years = scrape.get_games(fake_cache)
+    current_year = datetime.datetime.now().year
+    expected_years = [i for i in range(1869, current_year + 1)]
+    assert sorted(years) == sorted(expected_years)
+    assert 1870 not in result.keys()

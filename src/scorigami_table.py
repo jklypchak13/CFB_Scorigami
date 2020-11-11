@@ -29,10 +29,9 @@ class ScorigamiTable:
     """the whole scorigami table, tracking scores that have occureced
     """
 
-    def __init__(self, all_games: Dict[int, List[Game]]):
+    def __init__(self, all_games: List[Game]):
         self.unique_scores: Dict[Tuple[int, int], TableEntry] = {}
-        for year, games in all_games.items():
-            self.add_games(games)
+        self.add_games(all_games)
 
     def add_games(self, games: List[Game]):
         """add the given games to the scorigami table, checking if older/newer games exist
@@ -119,6 +118,22 @@ class ScorigamiTable:
             int: the highest score
         """
         return max(self.unique_scores.keys())[0]
+
+    def extract_games(self) -> List[Game]:
+        """get all of the relevant games from this scorigami table
+
+        Returns:
+            List[Game]: the first and last game of each scoreline
+        """
+        games = []
+        for entry in self.unique_scores.values():
+            first_game = entry.first_game
+            last_game = entry.last_game
+
+            games.append(first_game)
+            if first_game != last_game:
+                games.append(last_game)
+        return games
 
     def __len__(self):
         return len(self.unique_scores.keys())

@@ -11,7 +11,7 @@ IMPOSSIBLE_ENTRY = TableEntry('Impossible')
 def sample_games():
     samples = [
         Game('Ohio State', 'Michigan', 100, 0, 'Nov 3, 2020'),
-        Game('Penn State', 'Rutgers', 100, 0, 'Nov 3, 2020'),
+        Game('Penn State', 'Rutgers', 100, 0, 'Nov 2, 2020'),
         Game('Clemson', 'Alabama', 23, 20, 'Nov 3, 2020'),
         Game('Ohio State', 'Michigan State', 17, 7, 'Nov 3, 2020'),
     ]
@@ -26,23 +26,23 @@ def populated_table():
         Game('Clemson', 'Alabama', 23, 20, 'Nov 3, 2020'),
         Game('Ohio State', 'Michigan State', 17, 7, 'Nov 3, 2020'),
     ]
-    return ScorigamiTable({2020: samples})
+    return ScorigamiTable(samples)
 
 
 def test_constructor(sample_games):
-    table = ScorigamiTable({2020: sample_games})
+    table = ScorigamiTable(sample_games)
     assert len(table) == 3
 
 
 def test_add_games_empty():
-    table = ScorigamiTable({})
+    table = ScorigamiTable([])
     table.add_games([])
 
     assert len(table) == 0
 
 
 def test_add_games_nonempty(sample_games):
-    table = ScorigamiTable({})
+    table = ScorigamiTable([])
 
     table.add_games(sample_games)
 
@@ -50,7 +50,7 @@ def test_add_games_nonempty(sample_games):
 
 
 def test_add_games_has_value(sample_games):
-    table = ScorigamiTable({})
+    table = ScorigamiTable([])
 
     table.add_games(sample_games)
 
@@ -120,3 +120,23 @@ def test_get_value_filled(populated_table):
 
 def test_get_max_score(populated_table):
     assert populated_table.max_score() == 100
+
+
+def test_extract_games_no_useless(populated_table, sample_games):
+    result = populated_table.extract_games()
+    expected = sample_games
+
+
+def test_extract_games_useless_games(populated_table):
+    expected = [
+        Game('Ohio State', 'Rutgers', 100, 0, 'Nov 5, 2020'),
+        Game('Penn State', 'Rutgers', 100, 0, 'Nov 2, 2020'),
+        Game('Clemson', 'Alabama', 23, 20, 'Nov 3, 2020'),
+        Game('Ohio State', 'Michigan State', 17, 7, 'Nov 3, 2020'),
+    ]
+    newest_game = Game(
+        'Ohio State', 'Rutgers', 100, 0, 'Nov 5, 2020')
+    updated_table = populated_table
+    updated_table.add_games([newest_game])
+    result = updated_table.extract_games()
+    assert sorted(result) == sorted(expected)
