@@ -4,6 +4,7 @@ import bs4
 from data_types import Game
 import scraper.scrape as scrape
 import datetime
+from datetime import date as Date
 
 
 @pytest.fixture
@@ -15,9 +16,15 @@ def sample_rows():
 def get_fake_cache():
     return [i for i in range(1870, 2021)]
 
+
+# Test parse_date_string
+def test_parse_date_string():
+    expected = Date(2020, 10, 31)
+    result = scrape.parse_date_string('Oct 31, 2020')
+    assert expected == result
+
+
 # Test Get Year Data
-
-
 def test_get_year_data_length(sample_rows):
     # 2 Games in 1869, plus the table header
     assert len(sample_rows) == 3
@@ -29,7 +36,6 @@ def test_get_year_data_invalid():
 
 
 # Test Get Element
-
 def test_get_element_non_existant(sample_rows):
     row = sample_rows[1]
     assert scrape._get_element(row, 'potato') is None
@@ -61,12 +67,11 @@ def test_process_year_data_length(sample_rows):
 def test_process_year_data_correct_game(sample_rows):
     games = scrape._process_year_data(sample_rows)
 
-    expected = Game("Rutgers", "Princeton", 6, 4, "Nov 6, 1869")
+    expected = Game("Rutgers", "Princeton", 6, 4, Date(1869, 11, 6))
     assert games[0] == expected
 
 
 # Test Get Games
-
 def test_get_games_ignore_current_year_true():
     current_year = datetime.datetime.now().year
     fake_cache = get_fake_cache()
@@ -92,8 +97,8 @@ def test_get_games_1869_correct():
     result, years = scrape.get_games(fake_cache)
 
     expected = [
-        Game("Rutgers", "Princeton", 6, 4, "Nov 6, 1869"),
-        Game("Princeton", "Rutgers", 8, 0, "Nov 13, 1869")
+        Game("Rutgers", "Princeton", 6, 4, Date(1869, 11, 6)),
+        Game("Princeton", "Rutgers", 8, 0, Date(1869, 11, 13))
     ]
     current_year = datetime.datetime.now().year
     expected_years = [i for i in range(1869, current_year + 1)]

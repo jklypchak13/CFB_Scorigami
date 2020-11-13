@@ -3,8 +3,41 @@ from bs4 import BeautifulSoup
 from data_types.game import Game
 import urllib.error
 import bs4
-import datetime
+from datetime import date as Date
 from typing import Dict, List
+MONTH_TABLE = {
+    'Jan': '01',
+    'Feb': '02',
+    'Mar': '03',
+    'Apr': '04',
+    'May': '05',
+    'Jun': '06',
+    'Jul': '07',
+    'Aug': '08',
+    'Sep': '09',
+    'Oct': '10',
+    'Nov': '11',
+    'Dec': '12'
+}
+
+
+def parse_date_string(date_string: str) -> Date:
+    """parse the given string into a datetime object
+
+    Args:
+        date_string (str): the date in form MMM DD, YYYY
+
+    Returns:
+        Date: the date
+    """
+
+    components = date_string.replace(',', '').split(' ')
+    day = '0' + components[1] if len(components[1]) < 2 else components[1]
+    month = MONTH_TABLE[components[0]]
+    year = components[2]
+    new_str = f'{year}-{month}-{day}'
+
+    return Date.fromisoformat(new_str)
 
 
 def get_games(cached_years: List[int], ignore_current=True) -> Dict[int, List[Game]]:
@@ -18,7 +51,7 @@ def get_games(cached_years: List[int], ignore_current=True) -> Dict[int, List[Ga
         Dict[int, List[Game]]: all games tat have been played
     """
     starting_year: int = 1869  # first year of CFB
-    ending_year: int = datetime.datetime.now().year  # get up to date data
+    ending_year: int = Date.today().year  # get up to date data
 
     all_games = {}
 
@@ -81,6 +114,7 @@ def _process_year_data(rows: List[BeautifulSoup]) -> List[Game]:
         loser = _get_element(row, 'loser_school_name')
         date = _get_element(row, 'date_game')
         if date != 'Date' and winner_points is not None:
+            date = parse_date_string(date)
             games.append(
                 Game(winner, loser, winner_points, loser_points, date))
     return games
