@@ -2,14 +2,14 @@ import pytest
 from . import context
 from file_manger import read_cache, write_cache
 from data_types import Game
+from datetime import date as Date
 
 
 @pytest.fixture
 def sample_games():
-
     games = [
-        Game("Rutgers", "Princeton", 6, 4, "Nov 6, 1869"),
-        Game("Princeton", "Rutgers", 8, 0, "Nov 13, 1869")
+        Game("Rutgers", "Princeton", 6, 4, Date(1869, 11, 6)),
+        Game("Princeton", "Rutgers", 8, 0, Date(1869, 11, 13))
     ]
     return games
 
