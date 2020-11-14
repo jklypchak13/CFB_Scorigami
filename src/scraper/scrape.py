@@ -1,6 +1,6 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from data_types.game import Game
+from model.game import Game
 import urllib.error
 import bs4
 from datetime import date as Date

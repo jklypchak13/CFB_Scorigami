@@ -11,6 +11,7 @@ autopep8 = "*"
 jinja2 = "*"
 bs4 = "*"
 pytest = "*"
+sqlite3 = "*"
 
 [requires]
 python_version = "3.8"

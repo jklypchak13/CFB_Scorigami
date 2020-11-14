@@ -1,7 +1,7 @@
 import pytest
 from . import context
 import bs4
-from data_types import Game
+from model.game import Game
 import scraper.scrape as scrape
 import datetime
 from datetime import date as Date

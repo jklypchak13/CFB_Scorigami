@@ -1,5 +1,5 @@
 from typing import Dict, List, Tuple
-from data_types import Game
+from model.game import Game
 import pprint
 
 

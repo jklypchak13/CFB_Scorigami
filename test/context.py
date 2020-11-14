@@ -1,7 +1,7 @@
 """
-This file is designed to account for the fact that we have a src and test directory. 
+This file is designed to account for the fact that we have a src and test directory.
 It's necessary to add the specified relative path to each test file so that our tests
-can access the source code under test. When righting a test it's necessary to add the 
+can access the source code under test. When righting a test it's necessary to add the
 line
 
 from . import context

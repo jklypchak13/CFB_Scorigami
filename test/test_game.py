@@ -1,6 +1,8 @@
 import pytest
 from . import context
-from data_types import Game
+
+from model.game import Game, parse_date_string
+from model.game import Game
 from datetime import date as Date
 
 
@@ -19,17 +21,6 @@ def test_to_json(sample_game):
         "date": "2020-11-05"
     }
     assert sample_game.to_json() == expected
-
-
-def test_from_json(sample_game):
-    data = {
-        "winner": "Ohio State",
-        "loser": "Michigan",
-        "winner_points": 100,
-        "loser_points": 0,
-        "date": "2020-11-05"
-    }
-    assert Game.from_json(data) == sample_game
 
 
 def test_repr(sample_game):

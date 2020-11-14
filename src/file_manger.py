@@ -1,7 +1,7 @@
 import jinja2
 import os
 import json
-from data_types import Game
+from model.game import Game
 from typing import List
 OUTPUT_DIR: str = f'docs{os.sep}'
 INPUT_DIR: str = './src/templates'

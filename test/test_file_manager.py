@@ -1,7 +1,7 @@
 import pytest
 from . import context
 from file_manger import read_cache, write_cache
-from data_types import Game
+from model.game import Game
 from datetime import date as Date
 
 
@@ -18,13 +18,6 @@ def sample_games():
 def sample_years():
     years = [1869]
     return years
-
-
-def test_read_cache(sample_games, sample_years):
-    input_file = 'test/data/sample_cache.json'
-    games, years = read_cache(input_file)
-    assert games == sample_games
-    assert years == sample_years
 
 
 def test_write_cache(sample_games, sample_years):

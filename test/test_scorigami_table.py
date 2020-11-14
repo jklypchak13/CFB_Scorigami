@@ -1,7 +1,8 @@
 import pytest
 from . import context
 from scorigami_table import ScorigamiTable, TableEntry
-from data_types import Game
+
+from model.game import Game
 from datetime import date as Date
 EMPTY_ENTRY = TableEntry()
 IMPOSSIBLE_ENTRY = TableEntry('Impossible')
