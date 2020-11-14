@@ -1,7 +1,5 @@
 import pytest
 from . import context
-
-from model.game import Game, parse_date_string
 from model.game import Game
 from datetime import date as Date
 
